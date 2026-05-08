@@ -1,68 +1,83 @@
 import { Routes, Route, useLocation, useNavigate } from 'react-router';
 import { useState, useEffect } from 'react';
 import AppShell from '@/components/AppShell';
-import CommandCenter from '@/pages/CommandCenter';
-import LiquidityRules from '@/pages/LiquidityRules';
-import EscrowHub from '@/pages/EscrowHub';
-import DisputeEngine from '@/pages/DisputeEngine';
-import GstAggregator from '@/pages/GstAggregator';
+
+// Pages
+import SmallFleetHome from '@/pages/SmallFleetHome';
+import SmallFleetRecharge from '@/pages/SmallFleetRecharge';
+import EnterpriseDashboard from '@/pages/EnterpriseDashboard';
+import OneClickRecharge from '@/pages/OneClickRecharge';
+import AutoRechargeRules from '@/pages/AutoRechargeRules';
+import FleetRoster from '@/pages/FleetRoster';
+import TripTollBudget from '@/pages/TripTollBudget';
+import Disputes from '@/pages/Disputes';
+import GstReports from '@/pages/GstReports';
+import Settings from '@/pages/Settings';
 import Login from '@/pages/Login';
 import NotFound from '@/pages/NotFound';
 
-function Dashboard() {
+type PortalMode = 'small-fleet' | 'enterprise';
+
+const ENTERPRISE_PATHS = [
+  '/enterprise',
+  '/enterprise/recharge',
+  '/enterprise/auto-rules',
+  '/enterprise/fleet',
+  '/enterprise/trips',
+  '/enterprise/disputes',
+  '/enterprise/gst',
+  '/enterprise/settings',
+];
+
+function Portal() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Fleet mode toggle state - derived from current route
-  const [fleetMode, setFleetMode] = useState<'owned' | 'market'>(() => {
-    return location.pathname === '/escrow' ? 'market' : 'owned';
+  // Derive initial mode from current path
+  const [portalMode, setPortalMode] = useState<PortalMode>(() => {
+    const saved = sessionStorage.getItem('portalMode') as PortalMode | null;
+    if (saved) return saved;
+    return ENTERPRISE_PATHS.some(p => location.pathname.startsWith(p))
+      ? 'enterprise'
+      : 'small-fleet';
   });
 
-  // Sync fleet mode with route changes
+  // Sync mode with route
   useEffect(() => {
-    if (location.pathname === '/escrow') {
-      setFleetMode('market');
-    } else if (location.pathname === '/') {
-      setFleetMode('owned');
-    }
+    const isEnterprise = ENTERPRISE_PATHS.some(p => location.pathname.startsWith(p));
+    setPortalMode(isEnterprise ? 'enterprise' : 'small-fleet');
   }, [location.pathname]);
 
-  // Handle fleet mode toggle
-  const handleFleetModeChange = (mode: 'owned' | 'market') => {
-    setFleetMode(mode);
-    if (mode === 'market') {
-      navigate('/escrow');
+  const handleModeChange = (mode: PortalMode) => {
+    setPortalMode(mode);
+    sessionStorage.setItem('portalMode', mode);
+    if (mode === 'enterprise') {
+      navigate('/enterprise');
     } else {
       navigate('/');
     }
   };
 
-  // Determine which page content to show based on route
   const renderPage = () => {
     switch (location.pathname) {
-      case '/':
-        return <CommandCenter />;
-      case '/liquidity':
-        return <LiquidityRules />;
-      case '/escrow':
-        return <EscrowHub />;
-      case '/dispute':
-        return <DisputeEngine />;
-      case '/gst':
-        return <GstAggregator />;
-      default:
-        return <NotFound />;
+      // Small Fleet
+      case '/':          return <SmallFleetHome />;
+      case '/recharge':  return <SmallFleetRecharge />;
+      // Enterprise
+      case '/enterprise':              return <EnterpriseDashboard />;
+      case '/enterprise/recharge':     return <OneClickRecharge />;
+      case '/enterprise/auto-rules':   return <AutoRechargeRules />;
+      case '/enterprise/fleet':        return <FleetRoster />;
+      case '/enterprise/trips':        return <TripTollBudget />;
+      case '/enterprise/disputes':     return <Disputes />;
+      case '/enterprise/gst':          return <GstReports />;
+      case '/enterprise/settings':     return <Settings />;
+      default:                         return <NotFound />;
     }
   };
 
-  // Only show fleet toggle on Command Center and Escrow pages
-  const showFleetToggle = location.pathname === '/' || location.pathname === '/escrow';
-
   return (
-    <AppShell
-      fleetMode={fleetMode}
-      onFleetModeChange={showFleetToggle ? handleFleetModeChange : () => {}}
-    >
+    <AppShell portalMode={portalMode} onModeChange={handleModeChange}>
       {renderPage()}
     </AppShell>
   );
@@ -71,13 +86,8 @@ function Dashboard() {
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
-      <Route path="/liquidity" element={<Dashboard />} />
-      <Route path="/escrow" element={<Dashboard />} />
-      <Route path="/dispute" element={<Dashboard />} />
-      <Route path="/gst" element={<Dashboard />} />
       <Route path="/login" element={<Login />} />
-      <Route path="*" element={<Dashboard />} />
+      <Route path="/*" element={<Portal />} />
     </Routes>
   );
 }

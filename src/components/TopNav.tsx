@@ -1,85 +1,145 @@
 import { useState } from 'react';
-import { Search, Bell, Settings, Command } from 'lucide-react';
+import { useNavigate } from 'react-router';
+import { Search, Bell, ChevronDown, LogOut, Settings, User, Truck } from 'lucide-react';
 
 interface TopNavProps {
-  fleetMode: 'owned' | 'market';
-  onFleetModeChange: (mode: 'owned' | 'market') => void;
+  portalMode: 'small-fleet' | 'enterprise';
+  onModeChange: (mode: 'small-fleet' | 'enterprise') => void;
 }
 
-export default function TopNav({ fleetMode, onFleetModeChange }: TopNavProps) {
-  const [searchFocused, setSearchFocused] = useState(false);
+export default function TopNav({ portalMode, onModeChange }: TopNavProps) {
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleModeChange = (mode: 'small-fleet' | 'enterprise') => {
+    onModeChange(mode);
+    if (mode === 'enterprise') {
+      navigate('/enterprise');
+    } else {
+      navigate('/');
+    }
+  };
 
   return (
-    <header className="h-[72px] sticky top-0 z-30 bg-[#050505]/80 backdrop-blur-md border-b border-[#27272A] flex items-center justify-between px-6">
-      {/* Left spacer to account for sidebar */}
-      <div className="w-[260px]" />
+    <header className="h-16 bg-white border-b border-[#E5E7EB] flex items-center px-5 sticky top-0 z-40 shadow-sm">
+      {/* Logo */}
+      <div className="flex items-center gap-3 min-w-[200px]">
+        {portalMode === 'small-fleet' && (
+          <>
+            <div className="w-8 h-8 rounded-lg bg-[#C1121F] flex items-center justify-center shadow-sm">
+              <Truck className="w-4 h-4 text-white" strokeWidth={2.5} />
+            </div>
+            <div className="leading-tight">
+              <div className="text-sm font-700 text-[#111827] tracking-tight font-semibold">IDFC FIRST</div>
+              <div className="text-[10px] text-[#6B7280] font-medium">Fleet Portal</div>
+            </div>
+          </>
+        )}
+      </div>
 
-      {/* Center: Segmented Control */}
-      <div className="absolute left-1/2 -translate-x-1/2 flex items-center">
-        <div className="flex bg-[#111111] rounded-xl p-1 border border-[#27272A]">
+      {/* Mode Switch — Center */}
+      <div className="flex-1 flex justify-center">
+        <div className="flex bg-[#F3F4F6] rounded-xl p-1 gap-1">
           <button
-            onClick={() => onFleetModeChange('owned')}
-            className={`relative px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ${
-              fleetMode === 'owned'
-                ? 'bg-gradient-to-r from-[#8B0000] to-[#DC2626] text-white shadow-lg shadow-red-900/20'
-                : 'text-gray-500 hover:text-gray-300'
+            onClick={() => handleModeChange('small-fleet')}
+            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+              portalMode === 'small-fleet'
+                ? 'bg-white text-[#111827] shadow-sm border border-[#E5E7EB]'
+                : 'text-[#6B7280] hover:text-[#111827]'
             }`}
           >
-            <span className="flex items-center gap-2">
-              Owned Fleet
-              <span className="text-[10px] opacity-60">(Direct Assets)</span>
-            </span>
+            Small Fleet Mode
           </button>
           <button
-            onClick={() => onFleetModeChange('market')}
-            className={`relative px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ${
-              fleetMode === 'market'
-                ? 'bg-gradient-to-r from-[#8B0000] to-[#DC2626] text-white shadow-lg shadow-red-900/20'
-                : 'text-gray-500 hover:text-gray-300'
+            onClick={() => handleModeChange('enterprise')}
+            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+              portalMode === 'enterprise'
+                ? 'bg-white text-[#111827] shadow-sm border border-[#E5E7EB]'
+                : 'text-[#6B7280] hover:text-[#111827]'
             }`}
           >
-            <span className="flex items-center gap-2">
-              Market Fleet
-              <span className="text-[10px] opacity-60">(Attached Assets)</span>
-            </span>
+            Enterprise Mode
           </button>
         </div>
       </div>
 
-      {/* Right: Search, Notifications, Settings */}
-      <div className="flex items-center gap-3 ml-auto">
+      {/* Right: Search + Notifications + Profile */}
+      <div className="flex items-center gap-2 min-w-[200px] justify-end">
         {/* Search */}
-        <div
-          className={`flex items-center gap-2 bg-[#111111] border rounded-lg px-3 py-2 transition-all duration-200 ${
-            searchFocused ? 'border-[#8B0000]/50 w-72' : 'border-[#27272A] w-56'
-          }`}
-        >
-          <Search className="w-4 h-4 text-gray-600 flex-shrink-0" />
-          <input
-            type="text"
-            placeholder="Search vehicles, trips..."
-            className="bg-transparent border-none outline-none text-sm text-gray-300 placeholder-gray-600 w-full"
-            onFocus={() => setSearchFocused(true)}
-            onBlur={() => setSearchFocused(false)}
-          />
-          <div className="flex items-center gap-0.5 text-gray-600 flex-shrink-0">
-            <Command className="w-3 h-3" />
-            <span className="text-[10px]">K</span>
-          </div>
-        </div>
+        <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#F3F4F6] text-[#6B7280] transition-colors">
+          <Search className="w-4 h-4" />
+        </button>
 
         {/* Notifications */}
-        <button className="relative w-9 h-9 flex items-center justify-center rounded-lg bg-[#111111] border border-[#27272A] hover:border-[#8B0000]/30 transition-colors group">
-          <Bell className="w-4 h-4 text-gray-500 group-hover:text-gray-300 transition-colors" />
-          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#DC2626] flex items-center justify-center">
-            <span className="w-2 h-2 rounded-full bg-[#DC2626] animate-pulse-dot" />
-          </span>
-        </button>
+        <div className="relative">
+          <button
+            onClick={() => { setNotifOpen(!notifOpen); setProfileOpen(false); }}
+            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#F3F4F6] text-[#6B7280] transition-colors relative"
+          >
+            <Bell className="w-4 h-4" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-[#C1121F] rounded-full" />
+          </button>
+          {notifOpen && (
+            <div className="absolute right-0 top-10 w-80 bg-white border border-[#E5E7EB] rounded-xl shadow-lg z-50 overflow-hidden">
+              <div className="px-4 py-3 border-b border-[#F3F4F6]">
+                <p className="text-sm font-semibold text-[#111827]">Notifications</p>
+              </div>
+              <div className="divide-y divide-[#F3F4F6]">
+                <div className="px-4 py-3 hover:bg-[#F9FAFB] cursor-pointer">
+                  <p className="text-sm text-[#111827] font-medium">4 trucks have low balance</p>
+                  <p className="text-xs text-[#6B7280] mt-0.5">Recharge before tomorrow's trips</p>
+                </div>
+                <div className="px-4 py-3 hover:bg-[#F9FAFB] cursor-pointer">
+                  <p className="text-sm text-[#111827] font-medium">Bulk recharge failed — 2 trucks</p>
+                  <p className="text-xs text-[#6B7280] mt-0.5">Bank timeout. Retry required.</p>
+                </div>
+                <div className="px-4 py-3 hover:bg-[#F9FAFB] cursor-pointer">
+                  <p className="text-sm text-[#111827] font-medium">Dispute DISP-003 resolved</p>
+                  <p className="text-xs text-[#6B7280] mt-0.5">₹850 credited back to wallet</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
 
-        {/* Settings */}
-        <button className="w-9 h-9 flex items-center justify-center rounded-lg bg-[#111111] border border-[#27272A] hover:border-[#8B0000]/30 transition-colors group">
-          <Settings className="w-4 h-4 text-gray-500 group-hover:text-gray-300 transition-colors" />
-        </button>
+        {/* Profile */}
+        <div className="relative">
+          <button
+            onClick={() => { setProfileOpen(!profileOpen); setNotifOpen(false); }}
+            className="flex items-center gap-2 pl-2 pr-1 py-1 rounded-lg hover:bg-[#F3F4F6] transition-colors"
+          >
+            <div className="w-7 h-7 rounded-full bg-[#C1121F] flex items-center justify-center text-xs font-semibold text-white">
+              FA
+            </div>
+            <ChevronDown className={`w-3.5 h-3.5 text-[#6B7280] transition-transform ${profileOpen ? 'rotate-180' : ''}`} />
+          </button>
+          {profileOpen && (
+            <div className="absolute right-0 top-10 w-56 bg-white border border-[#E5E7EB] rounded-xl shadow-lg z-50 overflow-hidden">
+              <div className="px-4 py-3 border-b border-[#F3F4F6]">
+                <p className="text-sm font-semibold text-[#111827]">Fleet Admin</p>
+                <p className="text-xs text-[#6B7280]">admin@idfcfleet.com</p>
+              </div>
+              <div className="p-1">
+                <button className="w-full flex items-center gap-3 px-3 py-2 text-sm text-[#374151] hover:bg-[#F3F4F6] rounded-lg transition-colors">
+                  <User className="w-4 h-4 text-[#6B7280]" />
+                  My Account
+                </button>
+                <button
+                  onClick={() => { handleModeChange('enterprise'); setProfileOpen(false); navigate('/enterprise/settings'); }}
+                  className="w-full flex items-center gap-3 px-3 py-2 text-sm text-[#374151] hover:bg-[#F3F4F6] rounded-lg transition-colors"
+                >
+                  <Settings className="w-4 h-4 text-[#6B7280]" />
+                  Settings
+                </button>
+                <button className="w-full flex items-center gap-3 px-3 py-2 text-sm text-[#DC2626] hover:bg-[#FEF2F2] rounded-lg transition-colors">
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );
