@@ -13,6 +13,8 @@
   ],
   "compilerOptions": {
     "baseUrl": ".",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "paths": {
       "@/*": [
         "./src/*"
