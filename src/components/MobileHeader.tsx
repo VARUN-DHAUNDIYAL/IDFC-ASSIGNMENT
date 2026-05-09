@@ -28,9 +28,7 @@ export default function MobileHeader({ portalMode, onModeChange }: MobileHeaderP
         {/* Top Row: Logo & Icons */}
         <div className="h-14 flex items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[#C1121F] flex items-center justify-center shadow-sm">
-              <Truck className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
-            </div>
+            <img src="/idfc-logo.png" alt="IDFC FIRST" className="w-8 h-8 object-contain rounded-full border border-[#E5E7EB] shadow-sm" />
             <div className="leading-tight">
               <div className="text-sm font-semibold text-[#111827] tracking-tight">IDFC FIRST</div>
               <div className="text-[10px] text-[#6B7280] font-medium">Fleet Portal</div>

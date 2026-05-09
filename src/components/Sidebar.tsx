@@ -50,9 +50,7 @@ export default function Sidebar() {
       {/* Logo area — matches TopNav height */}
       <div className="h-16 flex items-center px-5 border-b border-[#E5E7EB] bg-white">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-[#C1121F] flex items-center justify-center shadow-sm">
-            <Truck className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
-          </div>
+          <img src="/idfc-logo.png" alt="IDFC FIRST" className="w-8 h-8 object-contain rounded-full border border-[#E5E7EB] shadow-sm" />
           <div className="leading-tight">
             <div className="text-sm font-semibold text-[#111827]">IDFC FIRST</div>
             <div className="text-[10px] text-[#6B7280]">Fleet Portal</div>

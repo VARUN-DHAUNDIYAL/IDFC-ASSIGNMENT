@@ -27,11 +27,9 @@ export default function TopNav({ portalMode, onModeChange }: TopNavProps) {
       <div className="flex items-center gap-3 min-w-[200px]">
         {portalMode === 'small-fleet' && (
           <>
-            <div className="w-8 h-8 rounded-lg bg-[#C1121F] flex items-center justify-center shadow-sm">
-              <Truck className="w-4 h-4 text-white" strokeWidth={2.5} />
-            </div>
+            <img src="/idfc-logo.png" alt="IDFC FIRST" className="w-10 h-10 object-contain rounded-full border border-[#E5E7EB] shadow-sm" />
             <div className="leading-tight">
-              <div className="text-sm font-700 text-[#111827] tracking-tight font-semibold">IDFC FIRST</div>
+              <div className="text-sm font-bold text-[#111827] tracking-tight">IDFC FIRST</div>
               <div className="text-[10px] text-[#6B7280] font-medium">Fleet Portal</div>
             </div>
           </>
