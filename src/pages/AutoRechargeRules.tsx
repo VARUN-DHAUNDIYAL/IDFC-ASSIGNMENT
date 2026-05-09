@@ -282,20 +282,20 @@ export default function AutoRechargeRules() {
                 </span>
               </div>
               <p className="text-xs text-[#6B7280] mt-1 leading-relaxed">
-                Stops unusual toll spend if a tag is misused or stolen. Spending above the daily limit will pause the truck's FASTag until reviewed.
+                Prevents unauthorized toll usage by capping maximum daily spend per truck.
               </p>
             </div>
           </div>
 
           {/* Preview */}
-          <div className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-4 flex items-start gap-3">
-            <Info className="w-4 h-4 text-[#2563EB] flex-shrink-0 mt-0.5" />
+          <div className="bg-[#EFF6FF] border border-[#BFDBFE] rounded-xl p-4 flex items-start gap-3">
+            <Info className="w-4 h-4 text-[#1E40AF] flex-shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm font-medium text-[#111827]">
-                This rule will apply to {selectedIds.size} truck{selectedIds.size !== 1 ? 's' : ''}.
+              <p className="text-sm font-medium text-[#1E40AF]">
+                Rule Summary: Automatically recharge {selectedIds.size} truck{selectedIds.size !== 1 ? 's' : ''} with ₹{rechargeAmount} when balance drops below ₹{triggerAmount}.
               </p>
-              <p className="text-xs text-[#6B7280] mt-0.5">
-                Estimated auto recharge actions tomorrow: ~{Math.round(selectedIds.size * 0.2)} trucks
+              <p className="text-xs text-[#3B82F6] mt-1">
+                Estimated recharges tomorrow: ~{Math.round(selectedIds.size * 0.2)} trucks
               </p>
             </div>
           </div>

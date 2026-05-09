@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import {
   LayoutDashboard,
@@ -11,19 +12,38 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { id: 'dashboard',   label: 'Dashboard',           path: '/enterprise',               icon: LayoutDashboard },
-  { id: 'recharge',    label: 'One Click Recharge',     path: '/enterprise/recharge',      icon: Zap },
-  { id: 'auto-rules',  label: 'Auto Recharge Rules',  path: '/enterprise/auto-rules',    icon: RefreshCw },
-  { id: 'fleet',       label: 'Fleet Roster',         path: '/enterprise/fleet',         icon: Truck },
-  { id: 'trips',       label: 'Trip Toll Budget',     path: '/enterprise/trips',         icon: MapPin },
-  { id: 'disputes',    label: 'Disputes',             path: '/enterprise/disputes',      icon: MessageSquare },
-  { id: 'gst',         label: 'GST Reports',          path: '/enterprise/gst',           icon: FileText },
-  { id: 'settings',    label: 'Settings',             path: '/enterprise/settings',      icon: Settings },
+  { id: 'dashboard',   label: 'Dashboard',           icon: LayoutDashboard },
+  { id: 'one-click-recharge',    label: 'One Click Recharge',     icon: Zap },
+  { id: 'auto-recharge-rules',  label: 'Auto Recharge Rules',  icon: RefreshCw },
+  { id: 'fleet-roster',       label: 'Fleet Roster',         icon: Truck },
+  { id: 'trip-toll-budget',       label: 'Trip Toll Budget',     icon: MapPin },
+  { id: 'disputes',    label: 'Disputes',             icon: MessageSquare },
+  { id: 'gst-reports',         label: 'GST Reports',          icon: FileText },
+  { id: 'settings',    label: 'Settings',             icon: Settings },
 ];
 
 export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [activeId, setActiveId] = useState('dashboard');
+
+  const handleScrollTo = (id: string) => {
+    setActiveId(id);
+    if (location.pathname !== '/enterprise') {
+      navigate('/enterprise');
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
 
   return (
     <aside className="w-[240px] min-w-[240px] h-screen bg-white border-r border-[#E5E7EB] flex flex-col fixed left-0 top-0 z-40">
@@ -48,12 +68,12 @@ export default function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
         {navItems.map((item) => {
-          const isActive = location.pathname === item.path;
+          const isActive = activeId === item.id;
           const Icon = item.icon;
           return (
             <button
               key={item.id}
-              onClick={() => navigate(item.path)}
+              onClick={() => handleScrollTo(item.id)}
               className={`relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 group ${
                 isActive
                   ? 'bg-[#FEF2F2] text-[#C1121F] font-medium'

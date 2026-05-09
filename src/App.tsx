@@ -6,13 +6,7 @@ import AppShell from '@/components/AppShell';
 import SmallFleetHome from '@/pages/SmallFleetHome';
 import SmallFleetRecharge from '@/pages/SmallFleetRecharge';
 import EnterpriseDashboard from '@/pages/EnterpriseDashboard';
-import OneClickRecharge from '@/pages/OneClickRecharge';
-import AutoRechargeRules from '@/pages/AutoRechargeRules';
-import FleetRoster from '@/pages/FleetRoster';
-import TripTollBudget from '@/pages/TripTollBudget';
-import Disputes from '@/pages/Disputes';
-import GstReports from '@/pages/GstReports';
-import Settings from '@/pages/Settings';
+
 import Login from '@/pages/Login';
 import NotFound from '@/pages/NotFound';
 
@@ -64,14 +58,15 @@ function Portal() {
       case '/':          return <SmallFleetHome />;
       case '/recharge':  return <SmallFleetRecharge />;
       // Enterprise
-      case '/enterprise':              return <EnterpriseDashboard />;
-      case '/enterprise/recharge':     return <OneClickRecharge />;
-      case '/enterprise/auto-rules':   return <AutoRechargeRules />;
-      case '/enterprise/fleet':        return <FleetRoster />;
-      case '/enterprise/trips':        return <TripTollBudget />;
-      case '/enterprise/disputes':     return <Disputes />;
-      case '/enterprise/gst':          return <GstReports />;
-      case '/enterprise/settings':     return <Settings />;
+      case '/enterprise':
+      case '/enterprise/recharge':
+      case '/enterprise/auto-rules':
+      case '/enterprise/fleet':
+      case '/enterprise/trips':
+      case '/enterprise/disputes':
+      case '/enterprise/gst':
+      case '/enterprise/settings':
+        return <EnterpriseDashboard />;
       default:                         return <NotFound />;
     }
   };

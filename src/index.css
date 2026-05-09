@@ -143,8 +143,11 @@
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+  min-height: 44px;
+  @media (min-width: 768px) { min-height: 40px; }
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
 }
 .btn-primary:hover  { background: #A50F1B; box-shadow: 0 4px 12px rgba(193,18,31,0.3); }
@@ -162,8 +165,11 @@
   font-weight: 500;
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
+  min-height: 44px;
+  @media (min-width: 768px) { min-height: 40px; }
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
 }
 .btn-secondary:hover { background: #F9FAFB; border-color: #D1D5DB; }
@@ -179,8 +185,11 @@
   font-weight: 500;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
+  min-height: 44px;
+  @media (min-width: 768px) { min-height: 36px; }
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
 }
 .btn-ghost:hover { background: #F3F4F6; color: #111827; }
@@ -211,6 +220,8 @@
   color: #111827;
   width: 100%;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  min-height: 44px;
+  @media (min-width: 768px) { min-height: 40px; }
   outline: none;
   font-family: inherit;
 }

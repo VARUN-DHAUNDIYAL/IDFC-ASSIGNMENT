@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
 import { 
   X, LayoutDashboard, RefreshCw, AlertCircle, FileText, 
   Settings, Truck, Settings2
@@ -12,14 +12,14 @@ interface MobileNavDrawerProps {
 }
 
 const enterpriseNavItems = [
-  { path: '/enterprise', icon: LayoutDashboard, label: 'Dashboard' },
-  { path: '/recharge', icon: RefreshCw, label: 'One Click Recharge' },
-  { path: '/rules', icon: Settings2, label: 'Auto Recharge Rules' },
-  { path: '/roster', icon: Truck, label: 'Fleet Roster' },
-  { path: '/budget', icon: FileText, label: 'Trip Toll Budget' },
-  { path: '/disputes', icon: AlertCircle, label: 'Disputes' },
-  { path: '/reports', icon: FileText, label: 'GST Reports' },
-  { path: '/settings', icon: Settings, label: 'Settings' },
+  { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { id: 'one-click-recharge', icon: RefreshCw, label: 'One Click Recharge' },
+  { id: 'auto-recharge-rules', icon: Settings2, label: 'Auto Recharge Rules' },
+  { id: 'fleet-roster', icon: Truck, label: 'Fleet Roster' },
+  { id: 'trip-toll-budget', icon: FileText, label: 'Trip Toll Budget' },
+  { id: 'disputes', icon: AlertCircle, label: 'Disputes' },
+  { id: 'gst-reports', icon: FileText, label: 'GST Reports' },
+  { id: 'settings', icon: Settings, label: 'Settings' },
 ];
 
 export default function MobileNavDrawer({ isOpen, onClose, portalMode }: MobileNavDrawerProps) {
@@ -65,21 +65,24 @@ export default function MobileNavDrawer({ isOpen, onClose, portalMode }: MobileN
         </div>
 
         <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
-          {portalMode === 'enterprise' && enterpriseNavItems.map(({ path, icon: Icon, label }) => {
-            const isActive = location.pathname === path || (path !== '/enterprise' && location.pathname.startsWith(path));
+          {portalMode === 'enterprise' && enterpriseNavItems.map(({ id, icon: Icon, label }) => {
             return (
-              <NavLink
-                key={path}
-                to={path}
-                className={`flex items-center gap-3 px-3 py-3 rounded-xl transition-colors ${
-                  isActive 
-                    ? 'bg-[#FEF2F2] text-[#C1121F] font-semibold' 
-                    : 'text-[#374151] hover:bg-[#F9FAFB] hover:text-[#111827] font-medium'
-                }`}
+              <button
+                key={id}
+                onClick={() => {
+                  onClose();
+                  setTimeout(() => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }, 100);
+                }}
+                className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-colors text-[#374151] hover:bg-[#F9FAFB] hover:text-[#111827] font-medium`}
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-[#C1121F]' : 'text-[#9CA3AF]'}`} strokeWidth={isActive ? 2.5 : 2} />
+                <Icon className={`w-5 h-5 text-[#9CA3AF]`} strokeWidth={2} />
                 <span className="text-sm">{label}</span>
-              </NavLink>
+              </button>
             );
           })}
         </div>

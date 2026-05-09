@@ -116,7 +116,7 @@ export default function SmallFleetHome() {
               <p className="text-sm font-semibold text-[#111827]">Recharge needed for tomorrow</p>
               <p className="text-2xl font-bold text-[#111827] mt-1">₹8,400 <span className="text-sm font-normal text-[#6B7280]">required</span></p>
               <p className="text-xs text-[#6B7280] mt-2 leading-relaxed">
-                {lowBalanceTrucks.length} trucks have low balance. Recharge now to avoid delays at toll plazas.
+                4 trucks have low balance. Recharge now to avoid delays at toll plazas.
               </p>
             </div>
           </div>
@@ -175,31 +175,25 @@ export default function SmallFleetHome() {
             View all <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>
-        <div className="overflow-x-auto">
-          <table className="bank-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Truck Number</th>
-                <th>Toll Plaza</th>
-                <th>Amount</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentTolls.map((toll, i) => (
-                <tr key={i}>
-                  <td className="text-[#6B7280]">{toll.date}</td>
-                  <td className="font-medium">{toll.truck}</td>
-                  <td className="text-[#6B7280]">{toll.plaza}</td>
-                  <td className="font-medium">₹{toll.amount}</td>
-                  <td>
-                    <span className="badge badge-success">Paid</span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="divide-y divide-[#F3F4F6]">
+          {recentTolls.map((toll, i) => (
+            <div key={i} className="px-5 py-3.5 flex items-center justify-between hover:bg-[#F9FAFB] transition-colors">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#F0FDF4] text-[#16A34A] font-medium uppercase tracking-wide">Paid</span>
+                  <p className="text-sm font-medium text-[#111827]">{toll.plaza}</p>
+                </div>
+                <p className="text-xs text-[#6B7280] mt-1 flex items-center gap-2">
+                  <span>{toll.date}</span>
+                  <span className="w-1 h-1 rounded-full bg-[#D1D5DB]" />
+                  <span>Truck: <span className="font-medium text-[#374151]">{toll.truck}</span></span>
+                </p>
+              </div>
+              <div className="text-right">
+                <span className="text-sm font-semibold text-[#111827]">₹{toll.amount}</span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
