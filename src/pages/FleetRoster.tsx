@@ -6,6 +6,7 @@ import {
 import { vehicleList } from '@/data/mockData';
 import type { Vehicle } from '@/data/mockData';
 import InfoTooltip from '@/components/InfoTooltip';
+import MobileFleetRoster from '@/components/MobileFleetRoster';
 
 function Toast({ message, onClose }: { message: string; onClose: () => void }) {
   return (
@@ -151,7 +152,11 @@ export default function FleetRoster() {
   };
 
   return (
-    <div className="space-y-5 animate-fadeIn">
+    <>
+      <div className="block md:hidden">
+        <MobileFleetRoster />
+      </div>
+      <div className="hidden md:block space-y-5 animate-fadeIn">
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
@@ -290,6 +295,7 @@ export default function FleetRoster() {
         />
       )}
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
-    </div>
+      </div>
+    </>
   );
 }

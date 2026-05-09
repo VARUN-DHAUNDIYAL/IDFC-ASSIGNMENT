@@ -5,6 +5,7 @@ import {
 import { disputes } from '@/data/mockData';
 import type { DisputeCase } from '@/data/mockData';
 import InfoTooltip from '@/components/InfoTooltip';
+import MobileDisputes from '@/components/MobileDisputes';
 
 type TabType = 'all' | 'open' | 'pending_evidence' | 'resolved';
 
@@ -178,7 +179,11 @@ export default function Disputes() {
   };
 
   return (
-    <div className="space-y-5 animate-fadeIn">
+    <>
+      <div className="block md:hidden">
+        <MobileDisputes />
+      </div>
+      <div className="hidden md:block space-y-5 animate-fadeIn pb-28">
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
@@ -280,6 +285,7 @@ export default function Disputes() {
         />
       )}
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
-    </div>
+      </div>
+    </>
   );
 }

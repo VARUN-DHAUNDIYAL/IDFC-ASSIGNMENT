@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Plus, X, CheckCircle, AlertCircle, MapPin } from 'lucide-react';
 import InfoTooltip from '@/components/InfoTooltip';
+import MobileTripTollBudget from '@/components/MobileTripTollBudget';
 import { tripBudgets } from '@/data/mockData';
 import type { TripBudget } from '@/data/mockData';
 
@@ -85,12 +86,13 @@ function CreateBudgetModal({ onClose, onSave }: {
 function TripCard({ trip }: { trip: TripBudget }) {
   const pct = Math.round((trip.spent / trip.totalBudget) * 100);
 
-  const statusConfig = {
+  const statusConfig: Record<string, { label: string; class: string }> = {
     active: { label: 'Active', class: 'badge-success' },
     near_limit: { label: 'Near Budget Limit', class: 'badge-warning' },
     completed: { label: 'Completed', class: 'badge-gray' },
     paused: { label: 'Paused', class: 'badge-error' },
-  }[trip.status];
+  };
+  const config = statusConfig[trip.status];
 
   return (
     <div className={`bank-card p-5 space-y-4 ${trip.status === 'near_limit' ? 'border-l-4 border-l-[#D97706]' : ''}`}>
@@ -98,7 +100,7 @@ function TripCard({ trip }: { trip: TripBudget }) {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs font-mono text-[#9CA3AF]">Trip #{trip.tripId}</span>
-            <span className={`badge ${statusConfig.class} text-[10px]`}>{statusConfig.label}</span>
+            <span className={`badge ${config.class} text-[10px]`}>{config.label}</span>
           </div>
           <div className="flex items-center gap-1.5 text-sm font-semibold text-[#111827]">
             <MapPin className="w-3.5 h-3.5 text-[#C1121F]" />
@@ -159,7 +161,11 @@ export default function TripTollBudget() {
   const completed = tripBudgets.filter(t => t.status === 'completed');
 
   return (
-    <div className="space-y-6 animate-fadeIn">
+    <>
+      <div className="block md:hidden">
+        <MobileTripTollBudget />
+      </div>
+      <div className="hidden md:block space-y-6 animate-fadeIn pb-28">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -219,6 +225,7 @@ export default function TripTollBudget() {
         />
       )}
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
-    </div>
+      </div>
+    </>
   );
 }

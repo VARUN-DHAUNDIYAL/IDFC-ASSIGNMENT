@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CheckCircle, User, Users, Briefcase, Headphones, Bell, Shield, CreditCard, ClipboardList } from 'lucide-react';
 import InfoTooltip from '@/components/InfoTooltip';
+import MobileSettings from '@/components/MobileSettings';
 import { auditLog } from '@/data/mockData';
 
 function Toast({ message, onClose }: { message: string; onClose: () => void }) {
@@ -78,7 +79,11 @@ export default function Settings() {
   };
 
   return (
-    <div className="space-y-6 animate-fadeIn max-w-4xl">
+    <>
+      <div className="block md:hidden">
+        <MobileSettings />
+      </div>
+      <div className="hidden md:block space-y-6 animate-fadeIn max-w-4xl pb-28">
       {/* Header */}
       <div>
         <h1 className="text-xl font-bold text-[#111827]">Settings</h1>
@@ -224,6 +229,7 @@ export default function Settings() {
       </SectionCard>
 
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
-    </div>
+      </div>
+    </>
   );
 }

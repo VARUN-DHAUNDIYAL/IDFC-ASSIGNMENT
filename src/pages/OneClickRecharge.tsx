@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Search, CheckCircle, RefreshCw, Shield, Clock } from 'lucide-react';
 import InfoTooltip from '@/components/InfoTooltip';
+import MobileOneClickRecharge from '@/components/MobileOneClickRecharge';
 import { vehicleList } from '@/data/mockData';
 
 function Toast({ message, onClose }: { message: string; onClose: () => void }) {
@@ -57,7 +58,11 @@ export default function OneClickRecharge() {
   };
 
   return (
-    <div className="space-y-6 animate-fadeIn pb-28">
+    <>
+      <div className="block md:hidden">
+        <MobileOneClickRecharge />
+      </div>
+      <div className="hidden md:block space-y-6 animate-fadeIn pb-28">
       {/* Header */}
       <div>
         <h1 className="text-xl font-bold text-[#111827] flex items-center">
@@ -291,6 +296,7 @@ export default function OneClickRecharge() {
       </div>
 
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
-    </div>
+      </div>
+    </>
   );
 }

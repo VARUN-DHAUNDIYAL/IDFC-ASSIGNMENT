@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Search, Check, CheckCircle, Shield, Info } from 'lucide-react';
 import InfoTooltip from '@/components/InfoTooltip';
+import MobileAutoRechargeRules from '@/components/MobileAutoRechargeRules';
 import { vehicleList } from '@/data/mockData';
 
 type FilterType = 'all' | 'low_balance' | 'active' | 'hired' | 'own';
@@ -77,7 +78,11 @@ export default function AutoRechargeRules() {
   };
 
   return (
-    <div className="h-[calc(100vh-88px)] flex gap-5 animate-fadeIn">
+    <>
+      <div className="block md:hidden">
+        <MobileAutoRechargeRules />
+      </div>
+      <div className="hidden md:flex h-[calc(100vh-88px)] gap-5 animate-fadeIn">
 
       {/* Left: Vehicle Selection */}
       <div className="w-[320px] min-w-[280px] flex flex-col gap-3">
@@ -306,6 +311,7 @@ export default function AutoRechargeRules() {
       </div>
 
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
-    </div>
+      </div>
+    </>
   );
 }

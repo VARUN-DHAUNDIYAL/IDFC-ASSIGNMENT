@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import InfoTooltip from '@/components/InfoTooltip';
+import MobileSmallFleetHome from '@/components/MobileSmallFleetHome';
 import {
   Wallet, AlertCircle, Truck, TrendingDown, IndianRupee,
   ArrowRight, CheckCircle, RefreshCw, ChevronRight, X,
@@ -38,7 +39,10 @@ export default function SmallFleetHome() {
 
   return (
     <>
-    <div className="space-y-6 animate-fadeIn">
+      <div className="block md:hidden">
+        <MobileSmallFleetHome />
+      </div>
+      <div className="hidden md:block space-y-6 animate-fadeIn">
 
       {/* ── Quick Menu ─────────────────────────────────────── */}
       <div className="flex items-center gap-6 border-b border-[#E5E7EB] pb-3 mb-6 overflow-x-auto hide-scrollbar">

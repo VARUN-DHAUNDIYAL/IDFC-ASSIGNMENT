@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Download, CheckCircle, ChevronDown, RefreshCw } from 'lucide-react';
 import InfoTooltip from '@/components/InfoTooltip';
+import MobileGstReports from '@/components/MobileGstReports';
 import { gstReports, gstStats } from '@/data/mockData';
 
 function Toast({ message, onClose }: { message: string; onClose: () => void }) {
@@ -25,7 +26,11 @@ export default function GstReports() {
   const months = ['April 2026', 'March 2026', 'February 2026', 'January 2026'];
 
   return (
-    <div className="space-y-6 animate-fadeIn">
+    <>
+      <div className="block md:hidden">
+        <MobileGstReports />
+      </div>
+      <div className="hidden md:block space-y-6 animate-fadeIn pb-28">
       {/* Header */}
       <div>
         <h1 className="text-xl font-bold text-[#111827] flex items-center gap-2">
@@ -143,6 +148,7 @@ export default function GstReports() {
       </div>
 
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
-    </div>
+      </div>
+    </>
   );
 }

@@ -5,6 +5,7 @@ import {
   CheckCircle, RefreshCw, MapPin,
 } from 'lucide-react';
 import InfoTooltip from '@/components/InfoTooltip';
+import MobileEnterpriseDashboard from '@/components/MobileEnterpriseDashboard';
 import { fleetSummary } from '@/data/mockData';
 
 function KpiCard({ label, value, sub, color }: {
@@ -93,7 +94,11 @@ export default function EnterpriseDashboard() {
   const maxVal = Math.max(...spendData.map(d => d.value));
 
   return (
-    <div className="space-y-6 animate-fadeIn">
+    <>
+      <div className="block md:hidden">
+        <MobileEnterpriseDashboard />
+      </div>
+      <div className="hidden md:block space-y-6 animate-fadeIn pb-20">
 
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -257,6 +262,7 @@ export default function EnterpriseDashboard() {
               </div>
             </div>
           </div>
+          </div>
           {/* Quick Links */}
           <div className="bank-card p-4 space-y-2">
             <p className="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wide mb-3">Quick Links</p>
@@ -277,9 +283,8 @@ export default function EnterpriseDashboard() {
           </div>
         </div>
       </div>
-      </div>
-
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
-    </div>
+      </div>
+    </>
   );
 }
