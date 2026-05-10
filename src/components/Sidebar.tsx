@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import {
   LayoutDashboard,
@@ -11,39 +10,40 @@ import {
   Settings,
 } from 'lucide-react';
 
-const navItems = [
-  { id: 'dashboard',   label: 'Dashboard',           icon: LayoutDashboard },
-  { id: 'one-click-recharge',    label: 'One Click Recharge',     icon: Zap },
-  { id: 'auto-recharge-rules',  label: 'Auto Recharge Rules',  icon: RefreshCw },
-  { id: 'fleet-roster',       label: 'Fleet Roster',         icon: Truck },
-  { id: 'trip-toll-budget',       label: 'Trip Toll Budget',     icon: MapPin },
-  { id: 'disputes',    label: 'Disputes',             icon: MessageSquare },
-  { id: 'gst-reports',         label: 'GST Reports',          icon: FileText },
-  { id: 'settings',    label: 'Settings',             icon: Settings },
+const navGroups = [
+  {
+    label: 'Daily Work',
+    items: [
+      { id: 'dashboard',   label: 'Dashboard',           icon: LayoutDashboard, path: '/enterprise' },
+      { id: 'one-click-recharge',    label: 'One Click Recharge',     icon: Zap, path: '/enterprise/recharge' },
+      { id: 'fleet-roster',       label: 'Fleet Roster',         icon: Truck, path: '/enterprise/fleet' },
+    ]
+  },
+  {
+    label: 'Controls',
+    items: [
+      { id: 'auto-recharge-rules',  label: 'Auto Recharge Rules',  icon: RefreshCw, path: '/enterprise/auto-rules' },
+      { id: 'trip-toll-budget',       label: 'Trip Toll Budget',     icon: MapPin, path: '/enterprise/trips' },
+    ]
+  },
+  {
+    label: 'Resolve and Report',
+    items: [
+      { id: 'disputes',    label: 'Toll Issues',             icon: MessageSquare, path: '/enterprise/issues' },
+      { id: 'gst-reports',         label: 'GST Reports',          icon: FileText, path: '/enterprise/gst' },
+    ]
+  },
+  {
+    label: 'Admin',
+    items: [
+      { id: 'settings',    label: 'Settings',             icon: Settings, path: '/enterprise/settings' },
+    ]
+  }
 ];
 
 export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [activeId, setActiveId] = useState('dashboard');
-
-  const handleScrollTo = (id: string) => {
-    setActiveId(id);
-    if (location.pathname !== '/enterprise') {
-      navigate('/enterprise');
-      setTimeout(() => {
-        const element = document.getElementById(id);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-    } else {
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  };
 
   return (
     <aside className="w-[240px] min-w-[240px] h-screen bg-white border-r border-[#E5E7EB] flex flex-col fixed left-0 top-0 z-40">
@@ -61,33 +61,41 @@ export default function Sidebar() {
       {/* Enterprise Mode label */}
       <div className="px-4 pt-4 pb-2">
         <span className="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-widest">Enterprise</span>
+        <p className="text-[10px] text-[#6B7280] mt-1 pr-2 leading-tight">
+          Advanced controls for recharge, vehicle, toll issue and reporting workflows.
+        </p>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
-        {navItems.map((item) => {
-          const isActive = activeId === item.id;
-          const Icon = item.icon;
-          return (
-            <button
-              key={item.id}
-              onClick={() => handleScrollTo(item.id)}
-              className={`relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 group ${
-                isActive
-                  ? 'bg-[#FEF2F2] text-[#C1121F] font-medium'
-                  : 'text-[#6B7280] hover:bg-[#F9FAFB] hover:text-[#111827]'
-              }`}
-            >
-              {isActive && <span className="sidebar-active-bar" />}
-              <Icon
-                className={`w-4 h-4 flex-shrink-0 transition-colors ${
-                  isActive ? 'text-[#C1121F]' : 'text-[#9CA3AF] group-hover:text-[#6B7280]'
-                }`}
-              />
-              <span className="truncate">{item.label}</span>
-            </button>
-          );
-        })}
+      <nav className="flex-1 px-3 space-y-4 overflow-y-auto pb-4">
+        {navGroups.map((group, idx) => (
+          <div key={idx} className="space-y-1">
+            <p className="px-3 text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-wider mb-1.5">{group.label}</p>
+            {group.items.map((item) => {
+              const isActive = location.pathname === item.path;
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => navigate(item.path)}
+                  className={`relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 group ${
+                    isActive
+                      ? 'bg-[#FEF2F2] text-[#C1121F] font-medium'
+                      : 'text-[#6B7280] hover:bg-[#F9FAFB] hover:text-[#111827]'
+                  }`}
+                >
+                  {isActive && <span className="sidebar-active-bar" />}
+                  <Icon
+                    className={`w-4 h-4 flex-shrink-0 transition-colors ${
+                      isActive ? 'text-[#C1121F]' : 'text-[#9CA3AF] group-hover:text-[#6B7280]'
+                    }`}
+                  />
+                  <span className="truncate">{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        ))}
       </nav>
 
       {/* Bottom — User info */}

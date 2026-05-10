@@ -18,7 +18,7 @@ export default function MobileDisputes() {
         
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-[#111827]">Disputes</h1>
+          <h1 className="text-2xl font-bold text-[#111827]">Toll Issues</h1>
           <p className="text-sm text-[#6B7280] mt-1">Track incorrect toll deductions and upload evidence.</p>
         </div>
 
@@ -53,7 +53,7 @@ export default function MobileDisputes() {
               <div className="bg-[#F9FAFB] rounded-lg p-3 border border-[#E5E7EB] mb-4">
                 <p className="text-sm font-semibold text-[#374151] mb-1">{d.issue}</p>
                 <div className="flex justify-between text-xs">
-                  <span className="text-[#6B7280]">Disputed Amount: <span className="font-semibold text-[#111827]">₹{d.amount}</span></span>
+                  <span className="text-[#6B7280]">Issue Amount: <span className="font-semibold text-[#111827]">₹{d.amount}</span></span>
                   <span className="text-[#6B7280]">{d.filedOn}</span>
                 </div>
               </div>
@@ -101,7 +101,7 @@ export default function MobileDisputes() {
                     <p className="font-semibold text-[#111827] mt-0.5">{activeDispute.truck}</p>
                   </div>
                   <div>
-                    <p className="text-[#6B7280] text-xs">Amount Disputed</p>
+                    <p className="text-[#6B7280] text-xs">Issue Amount</p>
                     <p className="font-semibold text-[#111827] mt-0.5">₹{activeDispute.amount}</p>
                   </div>
                   <div className="col-span-2 border-t border-[#F3F4F6] pt-3 mt-1">
@@ -121,7 +121,7 @@ export default function MobileDisputes() {
                       <div className="w-2 h-2 bg-white rounded-full" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-[#111827]">Dispute Raised</p>
+                      <p className="text-sm font-semibold text-[#111827]">Toll Issue Raised</p>
                       <p className="text-xs text-[#6B7280] mt-0.5">Jan 12, 2024</p>
                     </div>
                   </div>

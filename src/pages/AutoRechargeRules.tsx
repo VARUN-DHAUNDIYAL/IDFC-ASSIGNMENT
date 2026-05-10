@@ -242,7 +242,7 @@ export default function AutoRechargeRules() {
                 onChange={e => setFundingSource(e.target.value)}
               >
                 <option value="IDFC Current Account">IDFC Current Account</option>
-                <option value="FASTag Wallet Balance">FASTag Wallet Balance</option>
+                <option value="FASTag Wallet">FASTag Wallet</option>
                 <option value="IDFC Fleet Credit Limit">IDFC Fleet Credit Limit</option>
               </select>
             </div>

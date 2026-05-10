@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { User, Bell, AlertTriangle, HelpCircle, ChevronDown, CheckCircle, Shield, CreditCard, LogOut } from 'lucide-react';
+import { User, Bell, AlertTriangle, HelpCircle, ChevronDown, CheckCircle, Shield, CreditCard, LogOut, Users } from 'lucide-react';
 
 export default function MobileSettings() {
   const [activeSection, setActiveSection] = useState<string | null>('profile');
@@ -94,6 +94,52 @@ export default function MobileSettings() {
             <p className="text-sm font-bold text-[#111827] mt-1">IDFC Current A/C ending 8892</p>
           </div>
           <button className="btn-secondary w-full justify-center">Manage Payment Methods</button>
+        </div>
+      )
+    },
+    {
+      id: 'staff',
+      icon: Users,
+      title: 'Access and Roles',
+      content: (
+        <div className="space-y-4 pt-3 border-t border-[#F3F4F6] mt-3">
+          <p className="text-xs text-[#6B7280]">Give helpers or accountants limited access to the portal.</p>
+          <div className="space-y-3">
+            {[
+              {
+                title: 'Owner',
+                access: 'Full access',
+                desc: 'Can recharge, add trucks, download reports, and raise toll issues.',
+                color: 'text-[#C1121F]',
+                bg: 'bg-[#FEF2F2]',
+              },
+              {
+                title: 'Staff',
+                access: 'Recharge access',
+                desc: 'Can view trucks, prepare recharge, and raise toll issues.',
+                color: 'text-[#D97706]',
+                bg: 'bg-[#FFFBEB]',
+              },
+              {
+                title: 'Accountant',
+                access: 'Report only',
+                desc: 'Can view toll history and download monthly reports.',
+                color: 'text-[#2563EB]',
+                bg: 'bg-[#EFF6FF]',
+              },
+            ].map(({ title, access, desc, color, bg }) => (
+              <div key={title} className="p-3 border border-[#F3F4F6] rounded-xl bg-[#F9FAFB]">
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-semibold text-[#111827]">{title}</p>
+                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${bg} ${color}`}>{access}</span>
+                </div>
+                <p className="text-[11px] text-[#6B7280] mt-1.5 leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+          <button className="btn-secondary w-full justify-center" onClick={() => showToast('Staff access invite sent')}>
+            Invite Staff Member
+          </button>
         </div>
       )
     },

@@ -7,8 +7,18 @@ import SmallFleetHome from '@/pages/SmallFleetHome';
 import SmallFleetRecharge from '@/pages/SmallFleetRecharge';
 import EnterpriseDashboard from '@/pages/EnterpriseDashboard';
 
+import FigmaSmallFleetCapture from '@/pages/FigmaSmallFleetCapture';
+import FigmaEnterpriseCapture from '@/pages/FigmaEnterpriseCapture';
 import Login from '@/pages/Login';
 import NotFound from '@/pages/NotFound';
+
+import OneClickRecharge from '@/pages/OneClickRecharge';
+import AutoRechargeRules from '@/pages/AutoRechargeRules';
+import FleetRoster from '@/pages/FleetRoster';
+import TripTollBudget from '@/pages/TripTollBudget';
+import Disputes from '@/pages/Disputes';
+import GstReports from '@/pages/GstReports';
+import Settings from '@/pages/Settings';
 
 type PortalMode = 'small-fleet' | 'enterprise';
 
@@ -18,7 +28,7 @@ const ENTERPRISE_PATHS = [
   '/enterprise/auto-rules',
   '/enterprise/fleet',
   '/enterprise/trips',
-  '/enterprise/disputes',
+  '/enterprise/issues',
   '/enterprise/gst',
   '/enterprise/settings',
 ];
@@ -58,15 +68,14 @@ function Portal() {
       case '/':          return <SmallFleetHome />;
       case '/recharge':  return <SmallFleetRecharge />;
       // Enterprise
-      case '/enterprise':
-      case '/enterprise/recharge':
-      case '/enterprise/auto-rules':
-      case '/enterprise/fleet':
-      case '/enterprise/trips':
-      case '/enterprise/disputes':
-      case '/enterprise/gst':
-      case '/enterprise/settings':
-        return <EnterpriseDashboard />;
+      case '/enterprise':              return <EnterpriseDashboard />;
+      case '/enterprise/recharge':     return <OneClickRecharge />;
+      case '/enterprise/auto-rules':   return <AutoRechargeRules />;
+      case '/enterprise/fleet':        return <FleetRoster />;
+      case '/enterprise/trips':        return <TripTollBudget />;
+      case '/enterprise/issues':       return <Disputes />;
+      case '/enterprise/gst':          return <GstReports />;
+      case '/enterprise/settings':     return <Settings />;
       default:                         return <NotFound />;
     }
   };
@@ -82,6 +91,8 @@ export default function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/figma-small-fleet-capture" element={<FigmaSmallFleetCapture />} />
+      <Route path="/figma-enterprise-capture" element={<FigmaEnterpriseCapture />} />
       <Route path="/*" element={<Portal />} />
     </Routes>
   );

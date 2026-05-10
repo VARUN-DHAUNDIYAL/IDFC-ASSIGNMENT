@@ -290,7 +290,7 @@ export const disputes: DisputeCase[] = [
     evidenceUploaded: true,
     expectedResolution: 'May 12, 2026',
     timeline: [
-      { date: 'May 8', event: 'Dispute raised' },
+      { date: 'May 8', event: 'Toll issue raised' },
       { date: 'May 8', event: 'Acknowledgement received from NPCI' },
     ],
   },
@@ -305,7 +305,7 @@ export const disputes: DisputeCase[] = [
     evidenceUploaded: false,
     expectedResolution: 'May 13, 2026',
     timeline: [
-      { date: 'May 7', event: 'Dispute raised' },
+      { date: 'May 7', event: 'Toll issue raised' },
       { date: 'May 8', event: 'Evidence requested' },
     ],
   },
@@ -320,7 +320,7 @@ export const disputes: DisputeCase[] = [
     evidenceUploaded: true,
     expectedResolution: 'Resolved',
     timeline: [
-      { date: 'May 5', event: 'Dispute raised' },
+      { date: 'May 5', event: 'Toll issue raised' },
       { date: 'May 6', event: 'Evidence submitted' },
       { date: 'May 7', event: 'Resolved — ₹850 credited back' },
     ],
@@ -336,7 +336,7 @@ export const disputes: DisputeCase[] = [
     evidenceUploaded: false,
     expectedResolution: 'May 11, 2026',
     timeline: [
-      { date: 'May 8', event: 'Dispute raised' },
+      { date: 'May 8', event: 'Toll issue raised' },
     ],
   },
 ];
@@ -362,7 +362,7 @@ export const gstStats = {
 export const auditLog: AuditLogEntry[] = [
   { id: 'a001', action: 'Bulk recharge approved — 14 trucks, ₹28,000', performedBy: 'Fleet Owner', timestamp: 'May 9, 2026 · 09:14 AM' },
   { id: 'a002', action: 'Auto recharge rule updated — threshold ₹500', performedBy: 'Fleet Owner', timestamp: 'May 8, 2026 · 06:30 PM' },
-  { id: 'a003', action: 'Dispute evidence uploaded — DISP-001', performedBy: 'Operations Manager', timestamp: 'May 8, 2026 · 04:45 PM' },
+  { id: 'a003', action: 'Toll issue evidence uploaded — DISP-001', performedBy: 'Operations Manager', timestamp: 'May 8, 2026 · 04:45 PM' },
   { id: 'a004', action: 'GST report downloaded — April 2026', performedBy: 'Finance Manager', timestamp: 'May 8, 2026 · 11:20 AM' },
   { id: 'a005', action: 'Trip budget created — Trip #4092', performedBy: 'Fleet Owner', timestamp: 'May 8, 2026 · 08:05 AM' },
 ];

@@ -116,10 +116,10 @@ function ManageDrawer({ vehicle, onClose, onToast }: {
             <button className="btn-secondary w-full justify-center">Edit Rules</button>
             <button
               className="btn-ghost w-full justify-center text-[#DC2626] hover:bg-[#FEF2F2]"
-              onClick={() => { onToast(`Dispute raised for ${vehicle.rcNumber}`); onClose(); }}
+              onClick={() => { onToast(`Toll issue raised for ${vehicle.rcNumber}`); onClose(); }}
             >
               <AlertCircle className="w-4 h-4" />
-              Raise Dispute
+              Raise Toll Issue
             </button>
             <button className="btn-ghost w-full justify-center">
               <ChevronRight className="w-4 h-4" />
@@ -135,6 +135,21 @@ function ManageDrawer({ vehicle, onClose, onToast }: {
 export default function FleetRoster() {
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
   const [toast, setToast] = useState<string | null>(null);
+  const [filter, setFilter] = useState<'All' | 'Own Trucks' | 'Hired Trucks' | 'Low Balance' | 'KYC Issue'>('All');
+  const [search, setSearch] = useState('');
+
+  const displayVehicles = vehicleList.filter(v => {
+    if (filter === 'Own Trucks' && v.type !== 'own') return false;
+    if (filter === 'Hired Trucks' && v.type !== 'hired') return false;
+    if (filter === 'Low Balance' && v.status !== 'low_balance' && v.status !== 'critical') return false;
+    if (filter === 'KYC Issue' && v.kycStatus !== 'kyc_issue') return false;
+
+    if (search) {
+      const q = search.toLowerCase();
+      return v.rcNumber.toLowerCase().includes(q) || v.driverName.toLowerCase().includes(q);
+    }
+    return true;
+  });
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -203,16 +218,19 @@ export default function FleetRoster() {
             type="text" 
             placeholder="Search truck, driver, or FASTag" 
             className="bank-input pl-10 w-full"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
           <svg className="w-4 h-4 text-[#9CA3AF] absolute left-3 top-1/2 -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
         <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0 hide-scrollbar">
-          {['All', 'Own Trucks', 'Hired Trucks', 'Low Balance', 'KYC Issue'].map((pill, i) => (
+          {(['All', 'Own Trucks', 'Hired Trucks', 'Low Balance', 'KYC Issue'] as const).map((pill) => (
             <button 
               key={pill} 
-              className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${i === 0 ? 'bg-[#111827] text-white' : 'bg-[#F3F4F6] text-[#374151] hover:bg-[#E5E7EB]'}`}
+              onClick={() => setFilter(pill)}
+              className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${filter === pill ? 'bg-[#111827] text-white' : 'bg-[#F3F4F6] text-[#374151] hover:bg-[#E5E7EB]'}`}
             >
               {pill}
             </button>
@@ -247,41 +265,49 @@ export default function FleetRoster() {
               </tr>
             </thead>
             <tbody>
-              {vehicleList.map((v) => (
-                <tr key={v.id}>
-                  <td className="font-semibold text-[#111827]">{v.rcNumber}</td>
-                  <td>
-                    <span className={`badge ${v.type === 'own' ? 'badge-info' : 'badge-gray'}`}>
-                      {v.type === 'own' ? 'Own Truck' : 'Hired Truck'}
-                    </span>
-                  </td>
-                  <td>
-                    <p className="text-sm text-[#111827]">{v.driverName}</p>
-                    <p className="text-[11px] text-[#9CA3AF]">{v.driverMobile}</p>
-                  </td>
-                  <td>
-                    <span className={`text-sm font-bold ${v.balance < 500 ? 'text-[#DC2626]' : 'text-[#111827]'}`}>
-                      ₹{v.balance.toLocaleString('en-IN')}
-                    </span>
-                  </td>
-                  <td><KycBadge status={v.kycStatus} /></td>
-                  <td>
-                    <span className={`badge ${v.autoRecharge ? 'badge-success' : 'badge-gray'}`}>
-                      {v.autoRecharge ? 'On' : 'Off'}
-                    </span>
-                  </td>
-                  <td className="text-sm font-medium text-[#111827]">₹{v.dailyLimit.toLocaleString('en-IN')}</td>
-                  <td>{statusBadge(v)}</td>
-                  <td>
-                    <button
-                      className="btn-secondary text-xs px-3 py-1.5"
-                      onClick={() => setSelectedVehicle(v)}
-                    >
-                      Manage
-                    </button>
+              {displayVehicles.length === 0 ? (
+                <tr>
+                  <td colSpan={9} className="text-center py-8 text-[#6B7280] text-sm">
+                    No vehicles found.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                displayVehicles.map((v) => (
+                  <tr key={v.id}>
+                    <td className="font-semibold text-[#111827]">{v.rcNumber}</td>
+                    <td>
+                      <span className={`badge ${v.type === 'own' ? 'badge-info' : 'badge-gray'}`}>
+                        {v.type === 'own' ? 'Own Truck' : 'Hired Truck'}
+                      </span>
+                    </td>
+                    <td>
+                      <p className="text-sm text-[#111827]">{v.driverName}</p>
+                      <p className="text-[11px] text-[#9CA3AF]">{v.driverMobile}</p>
+                    </td>
+                    <td>
+                      <span className={`text-sm font-bold ${v.balance < 500 ? 'text-[#DC2626]' : 'text-[#111827]'}`}>
+                        ₹{v.balance.toLocaleString('en-IN')}
+                      </span>
+                    </td>
+                    <td><KycBadge status={v.kycStatus} /></td>
+                    <td>
+                      <span className={`badge ${v.autoRecharge ? 'badge-success' : 'badge-gray'}`}>
+                        {v.autoRecharge ? 'On' : 'Off'}
+                      </span>
+                    </td>
+                    <td className="text-sm font-medium text-[#111827]">₹{v.dailyLimit.toLocaleString('en-IN')}</td>
+                    <td>{statusBadge(v)}</td>
+                    <td>
+                      <button
+                        className="btn-secondary text-xs px-3 py-1.5"
+                        onClick={() => setSelectedVehicle(v)}
+                      >
+                        Manage
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

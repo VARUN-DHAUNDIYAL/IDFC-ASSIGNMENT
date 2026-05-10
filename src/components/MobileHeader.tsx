@@ -28,10 +28,9 @@ export default function MobileHeader({ portalMode, onModeChange }: MobileHeaderP
         {/* Top Row: Logo & Icons */}
         <div className="h-14 flex items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <img src="/idfc-logo.png" alt="IDFC FIRST" className="w-8 h-8 object-contain rounded-full border border-[#E5E7EB] shadow-sm" />
-            <div className="leading-tight">
-              <div className="text-sm font-semibold text-[#111827] tracking-tight">IDFC FIRST</div>
-              <div className="text-[10px] text-[#6B7280] font-medium">Fleet Portal</div>
+            <div className="flex flex-col">
+              <div className="text-base font-black text-[#991B1B] tracking-tight leading-none">IDFC FIRST</div>
+              <div className="text-[10px] text-[#111827] font-semibold tracking-wide uppercase mt-0.5">Fleet Portal</div>
             </div>
           </div>
           
@@ -43,14 +42,12 @@ export default function MobileHeader({ portalMode, onModeChange }: MobileHeaderP
               <Bell className="w-4 h-4" />
               <span className="absolute top-2 right-2 w-1.5 h-1.5 bg-[#C1121F] rounded-full" />
             </button>
-            {portalMode === 'enterprise' && (
-              <button 
-                onClick={() => setDrawerOpen(true)}
-                className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-[#F3F4F6] text-[#6B7280] transition-colors"
-              >
-                <Menu className="w-5 h-5" />
-              </button>
-            )}
+            <button 
+              onClick={() => setDrawerOpen(true)}
+              className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-[#F3F4F6] text-[#6B7280] transition-colors"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
           </div>
         </div>
 

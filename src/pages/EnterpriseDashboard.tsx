@@ -1,21 +1,14 @@
 import { useState } from 'react';
 
 import {
-  Wallet, TrendingUp, AlertCircle, MessageSquare,
+  AlertCircle,
   CheckCircle, RefreshCw, MapPin,
 } from 'lucide-react';
 import InfoTooltip from '@/components/InfoTooltip';
 import MobileEnterpriseDashboard from '@/components/MobileEnterpriseDashboard';
 import { fleetSummary } from '@/data/mockData';
 
-// Import all sections
-import OneClickRecharge from './OneClickRecharge';
-import AutoRechargeRules from './AutoRechargeRules';
-import FleetRoster from './FleetRoster';
-import TripTollBudget from './TripTollBudget';
-import Disputes from './Disputes';
-import GstReports from './GstReports';
-import Settings from './Settings';
+
 
 function KpiCard({ label, value, sub, color }: {
   label: string; value: string; sub?: string; color?: string;
@@ -33,41 +26,6 @@ function KpiCard({ label, value, sub, color }: {
       </p>
       <p className={`text-3xl font-bold ${color ?? 'text-[#111827]'}`}>{value}</p>
       {sub && <p className="text-xs text-[#9CA3AF] mt-1">{sub}</p>}
-    </div>
-  );
-}
-
-function ActionCard({ type, title, desc, btn, btnVariant, onAction }: {
-  type: 'warning' | 'info' | 'error' | 'critical';
-  title: string;
-  desc: string;
-  btn: string;
-  btnVariant?: 'primary' | 'secondary';
-  onAction: () => void;
-}) {
-  const configs = {
-    warning: { bg: 'bg-[#FFFBEB]', border: 'border-[#D97706]', iconBg: 'bg-[#FFFBEB]', icon: AlertCircle, iconColor: 'text-[#D97706]' },
-    info:    { bg: 'bg-[#EFF6FF]', border: 'border-[#2563EB]', iconBg: 'bg-[#EFF6FF]', icon: MapPin,      iconColor: 'text-[#2563EB]' },
-    error:   { bg: 'bg-[#FEF2F2]', border: 'border-[#DC2626]', iconBg: 'bg-[#FEF2F2]', icon: AlertCircle, iconColor: 'text-[#DC2626]' },
-    critical:{ bg: 'bg-[#FFF7ED]', border: 'border-[#EA580C]', iconBg: 'bg-[#FFF7ED]', icon: AlertCircle, iconColor: 'text-[#EA580C]' },
-  };
-  const c = configs[type];
-  const Icon = c.icon;
-  return (
-    <div className={`bank-card p-5 border-l-4 ${c.border} flex items-start gap-4`}>
-      <div className={`w-9 h-9 rounded-xl ${c.iconBg} flex items-center justify-center flex-shrink-0`}>
-        <Icon className={`w-5 h-5 ${c.iconColor}`} />
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold text-[#111827]">{title}</p>
-        <p className="text-xs text-[#6B7280] mt-1 leading-relaxed">{desc}</p>
-      </div>
-      <button
-        onClick={onAction}
-        className={btnVariant === 'primary' ? 'btn-primary text-xs flex-shrink-0' : 'btn-secondary text-xs flex-shrink-0'}
-      >
-        {btn}
-      </button>
     </div>
   );
 }
@@ -90,16 +48,7 @@ function DashboardSection() {
     setTimeout(() => setToast(null), 4000);
   };
 
-  const spendData = [
-    { label: 'Mon', value: 38000 },
-    { label: 'Tue', value: 42300 },
-    { label: 'Wed', value: 35900 },
-    { label: 'Thu', value: 44100 },
-    { label: 'Fri', value: 39800 },
-    { label: 'Sat', value: 28500 },
-    { label: 'Sun', value: 21000 },
-  ];
-  const maxVal = Math.max(...spendData.map(d => d.value));
+
 
   return (
     <>
@@ -124,118 +73,202 @@ function DashboardSection() {
           </button>
         </div>
 
-        {/* KPI Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <KpiCard label="Total Fleet Balance" value="₹18,50,000" sub="Across 142 trucks" />
-          <KpiCard label="Today's Toll Spend" value={`₹${fleetSummary.todayTollSpend.toLocaleString('en-IN')}`} sub="Updated 5 min ago" />
-          <KpiCard label="Pending Recharge Actions" value={`${fleetSummary.pendingRechargeActions}`} sub="Trucks need recharge" color="text-[#D97706]" />
-          <KpiCard label="Open Disputes" value={`${fleetSummary.openDisputes}`} sub="Across all trucks" color="text-[#DC2626]" />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-base font-semibold text-[#111827] flex items-center">
-                Action Required
-                <InfoTooltip content="Only trucks needing attention are shown here, so large fleets do not become overwhelming." />
-              </h2>
-              <span className="badge badge-error text-xs">4 items</span>
+        {/* SECTION 1: Today’s Action Queue */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-base font-semibold text-[#111827]">Today’s Action Queue</h2>
+              <p className="text-xs text-[#6B7280]">Items that need operator attention before trucks move.</p>
             </div>
-            <div className="space-y-3">
-              <ActionCard type="warning" title="Low Balance — DL 1C 9999" desc="This truck has ₹120 balance and may get blocked at the next toll plaza. Suggested recharge: ₹2,000." btn="Recharge Now" btnVariant="primary" onAction={() => showToast('Recharge request submitted for DL 1C 9999')} />
-              <ActionCard type="info" title="Location Mismatch — MH 04 1234" desc="This truck was charged at Plaza B but the location data does not match the vehicle's position." btn="Review Dispute" onAction={() => {
+            <span className="badge badge-error text-xs">5 items</span>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+            {/* 1. Failed Recharge */}
+            <div className="bank-card p-4 border-l-4 border-[#DC2626] flex flex-col justify-between h-full gap-3">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-xl bg-[#FEF2F2] flex items-center justify-center flex-shrink-0">
+                  <AlertCircle className="w-4 h-4 text-[#DC2626]" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-[#111827]">Failed Recharge</p>
+                  <p className="text-xs text-[#6B7280] mt-0.5">Bulk recharge failed for 2 trucks.</p>
+                </div>
+              </div>
+              <button className="btn-secondary text-xs w-full justify-center" onClick={() => showToast('Retry initiated for failed recharge.')}>Retry</button>
+            </div>
+
+            {/* 2. Low Balance */}
+            <div className="bank-card p-4 border-l-4 border-[#D97706] flex flex-col justify-between h-full gap-3">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-xl bg-[#FFFBEB] flex items-center justify-center flex-shrink-0">
+                  <AlertCircle className="w-4 h-4 text-[#D97706]" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-semibold text-[#111827]">Low Balance</p>
+                    <span className="badge badge-info text-[10px] px-1.5 py-0">Own Truck</span>
+                  </div>
+                  <p className="text-xs text-[#6B7280] mt-0.5">Truck DL 1C 9999 has ₹120 balance. Suggested recharge ₹2,000.</p>
+                </div>
+              </div>
+              <button className="btn-primary text-xs w-full justify-center" onClick={() => {
+                const element = document.getElementById('one-click-recharge');
+                if (element) element.scrollIntoView({ behavior: 'smooth' });
+              }}>Recharge Now</button>
+            </div>
+
+            {/* 3. KYC Issue */}
+            <div className="bank-card p-4 border-l-4 border-[#DC2626] flex flex-col justify-between h-full gap-3">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-xl bg-[#FEF2F2] flex items-center justify-center flex-shrink-0">
+                  <AlertCircle className="w-4 h-4 text-[#DC2626]" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-semibold text-[#111827]">KYC Issue</p>
+                    <span className="badge badge-info text-[10px] px-1.5 py-0">Own Truck</span>
+                  </div>
+                  <p className="text-xs text-[#6B7280] mt-0.5">Truck HR 26 8888 has a previous tag conflict.</p>
+                </div>
+              </div>
+              <button className="btn-secondary text-xs w-full justify-center" onClick={() => showToast('Please upload the RC document for HR 26 8888')}>Upload RC</button>
+            </div>
+
+            {/* 4. Toll Issue Pending */}
+            <div className="bank-card p-4 border-l-4 border-[#D97706] flex flex-col justify-between h-full gap-3">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-xl bg-[#FFFBEB] flex items-center justify-center flex-shrink-0">
+                  <AlertCircle className="w-4 h-4 text-[#D97706]" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-[#111827]">Toll Issue Pending</p>
+                  <p className="text-xs text-[#6B7280] mt-0.5">Evidence required for double deduction or wrong toll charge.</p>
+                </div>
+              </div>
+              <button className="btn-secondary text-xs w-full justify-center" onClick={() => {
                 const element = document.getElementById('disputes');
                 if (element) element.scrollIntoView({ behavior: 'smooth' });
-              }} />
-              <ActionCard type="critical" title="KYC Issue — HR 26 8888" desc="This truck has a previous tag conflict. Upload the updated RC document to unblock the FASTag." btn="Upload RC" onAction={() => showToast('Please upload the RC document for HR 26 8888')} />
-              <ActionCard type="error" title="Failed Recharge — 2 Trucks" desc="Bulk recharge failed for DL 1C 9999 and TN 07 EF 3456 due to a bank timeout. Retry is available." btn="Retry" onAction={() => showToast('Retry recharge submitted successfully')} />
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <h2 className="text-base font-semibold text-[#111827] flex items-center">
-                Recharge Funding
-                <InfoTooltip content="Shows available wallet balance and approved IDFC funding options for enterprise recharges." />
-              </h2>
-              <div className="bank-card p-5">
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-xs text-[#6B7280] font-medium uppercase tracking-wide mb-1">Available IDFC Fleet Credit</p>
-                    <p className="text-2xl font-bold text-[#111827]">₹12,00,000</p>
-                  </div>
-                  <div className="flex justify-between border-t border-[#F3F4F6] pt-3 mt-3">
-                    <span className="text-sm text-[#6B7280]">Used This Month</span>
-                    <span className="text-sm font-semibold text-[#111827]">₹3,80,000</span>
-                  </div>
-                  <div className="flex justify-between border-t border-[#F3F4F6] pt-3">
-                    <span className="text-sm text-[#6B7280]">Wallet Balance</span>
-                    <span className="text-sm font-semibold text-[#111827]">₹18,50,000</span>
-                  </div>
-                </div>
-                <p className="text-[11px] text-[#6B7280] mt-4 leading-relaxed bg-[#F9FAFB] p-2 rounded-lg border border-[#F3F4F6]">
-                  Use wallet balance or approved IDFC credit for fleet recharges.
-                </p>
-              </div>
+              }}>Review</button>
             </div>
 
-            <div className="space-y-4">
-              <h2 className="text-base font-semibold text-[#111827]">Spend Summary</h2>
-              <div className="bank-card p-5">
-                <div className="flex bg-[#F3F4F6] rounded-lg p-1 mb-5">
-                  {['Today', 'This Week', 'This Month'].map((tab, i) => (
-                    <button key={tab} className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-all ${i === 1 ? 'bg-white text-[#111827] shadow-sm' : 'text-[#6B7280]'}`}>{tab}</button>
-                  ))}
+            {/* 5. Hired Trip Near Budget */}
+            <div className="bank-card p-4 border-l-4 border-[#2563EB] flex flex-col justify-between h-full gap-3">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-xl bg-[#EFF6FF] flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-4 h-4 text-[#2563EB]" />
                 </div>
-                <div className="flex items-end gap-1.5 h-28 mb-3">
-                  {spendData.map((d) => (
-                    <div key={d.label} className="flex-1 flex flex-col items-center gap-1">
-                      <div className="w-full bg-[#FEE2E2] rounded-t-sm transition-all" style={{ height: `${(d.value / maxVal) * 96}px` }}>
-                        <div className="w-full bg-[#C1121F] rounded-t-sm h-full opacity-80" style={{ opacity: d.label === 'Tue' ? 1 : 0.5 }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="flex items-end gap-1.5">
-                  {spendData.map((d) => (
-                    <div key={d.label} className="flex-1 text-center text-[10px] text-[#9CA3AF]">{d.label}</div>
-                  ))}
-                </div>
-                <div className="mt-4 pt-4 border-t border-[#F3F4F6] space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-[#6B7280]">This week</span>
-                    <span className="font-semibold text-[#111827]">₹2,49,600</span>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-semibold text-[#111827]">Hired Trip Near Budget</p>
+                    <span className="badge badge-gray text-[10px] px-1.5 py-0">Hired Truck</span>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-[#6B7280]">This month</span>
-                    <span className="font-semibold text-[#111827]">₹9,82,400</span>
-                  </div>
+                  <p className="text-xs text-[#6B7280] mt-0.5">2 hired truck trips are close to toll budget limit.</p>
                 </div>
               </div>
-            </div>
-
-            <div className="bank-card p-4 space-y-2">
-              <p className="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wide mb-3">Quick Links</p>
-              {[
-                { label: 'View Fleet Roster', id: 'fleet-roster', icon: Wallet },
-                { label: 'GST Reports', id: 'gst-reports', icon: TrendingUp },
-                { label: 'All Disputes', id: 'disputes', icon: MessageSquare },
-              ].map(({ label, id, icon: Icon }) => (
-                <button
-                  key={id}
-                  onClick={() => {
-                    const element = document.getElementById(id);
-                    if (element) element.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#F9FAFB] transition-colors text-left"
-                >
-                  <Icon className="w-4 h-4 text-[#9CA3AF]" />
-                  <span className="text-sm text-[#374151]">{label}</span>
-                </button>
-              ))}
+              <button className="btn-secondary text-xs w-full justify-center" onClick={() => {
+                const element = document.getElementById('trip-toll-budget');
+                if (element) element.scrollIntoView({ behavior: 'smooth' });
+              }}>View Budget</button>
             </div>
           </div>
         </div>
+
+        {/* SECTION 2: Fleet Coverage & SECTION 3: Recharge Readiness */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4">
+          {/* Snapshot */}
+          <div className="space-y-4">
+            <h2 className="text-base font-semibold text-[#111827]">Fleet Coverage</h2>
+            <div className="grid grid-cols-1 gap-3">
+              <div className="bank-card p-4 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-[#111827]">Own Trucks</p>
+                  <p className="text-[10px] text-[#6B7280] mt-0.5">186 active · 24 need recharge, 8 need attention</p>
+                </div>
+                <button className="btn-secondary text-[11px] px-3 py-1.5" onClick={() => {
+                  const element = document.getElementById('fleet-roster');
+                  if (element) element.scrollIntoView({ behavior: 'smooth' });
+                }}>View Own Trucks</button>
+              </div>
+              <div className="bank-card p-4 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-[#111827]">Hired Trucks</p>
+                  <p className="text-[10px] text-[#6B7280] mt-0.5">42 active trips · 6 trips need budget review</p>
+                </div>
+                <button className="btn-secondary text-[11px] px-3 py-1.5" onClick={() => {
+                  const element = document.getElementById('fleet-roster');
+                  if (element) element.scrollIntoView({ behavior: 'smooth' });
+                }}>View Hired Trucks</button>
+              </div>
+              <div className="bank-card p-4 flex items-center justify-between bg-[#F9FAFB]">
+                <div>
+                  <p className="text-sm font-semibold text-[#111827]">Total Fleet Tracked</p>
+                  <p className="text-[10px] text-[#6B7280] mt-0.5">228 active · 30 need attention today</p>
+                </div>
+                <button className="btn-secondary text-[11px] px-3 py-1.5 bg-white" onClick={() => {
+                  const element = document.getElementById('fleet-roster');
+                  if (element) element.scrollIntoView({ behavior: 'smooth' });
+                }}>View Fleet Roster</button>
+              </div>
+            </div>
+          </div>
+
+          {/* Readiness */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-base font-semibold text-[#111827]">Recharge Readiness</h2>
+              <button className="btn-secondary text-xs" onClick={() => {
+                const element = document.getElementById('one-click-recharge');
+                if (element) element.scrollIntoView({ behavior: 'smooth' });
+              }}>Review Recharge Plan</button>
+            </div>
+            <div className="grid grid-cols-1 gap-4">
+              <div className="bank-card p-5 border-t-4 border-t-[#111827]">
+                <p className="text-xs font-semibold text-[#6B7280] uppercase tracking-wide">Own Truck Recharge Need</p>
+                <p className="text-2xl font-bold text-[#111827] mt-1">₹54,000 <span className="text-sm font-normal text-[#6B7280]">needed today</span></p>
+                <p className="text-xs text-[#9CA3AF] mt-1">For own trucks with low FASTag balance.</p>
+              </div>
+              <div className="bank-card p-5 border-t-4 border-t-[#6B7280]">
+                <p className="text-xs font-semibold text-[#6B7280] uppercase tracking-wide">Hired Truck Toll Budget Need</p>
+                <p className="text-2xl font-bold text-[#111827] mt-1">₹18,400 <span className="text-sm font-normal text-[#6B7280]">needed today</span></p>
+                <p className="text-xs text-[#9CA3AF] mt-1">For active hired truck trips with low remaining toll budget.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* SECTION 4: Spend Summary */}
+        <div className="pt-4 space-y-4">
+          <h2 className="text-base font-semibold text-[#111827]">Spend Summary</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <KpiCard label="Total Fleet Balance" value="₹18,50,000" sub="Across 228 trucks" />
+            <KpiCard label="Today's Toll Spend" value={`₹${fleetSummary.todayTollSpend.toLocaleString('en-IN')}`} sub="Updated 5 min ago" />
+            <KpiCard label="Pending Recharge Actions" value="30" sub="Trucks need recharge" color="text-[#D97706]" />
+            <KpiCard label="Open Toll Issues" value={`${fleetSummary.openDisputes}`} sub="Across all trucks" color="text-[#DC2626]" />
+          </div>
+        </div>
+
+        {/* SECTION 5: Recent Activity */}
+        <div className="bank-card p-5">
+          <h2 className="text-sm font-semibold text-[#111827] mb-3">Recent Activity</h2>
+          <div className="space-y-0 divide-y divide-[#F9FAFB]">
+            {[
+              { action: 'Bulk recharge approved — 14 trucks, ₹28,000', by: 'Fleet Owner', time: 'Today · 09:14 AM' },
+              { action: 'Auto recharge rule triggered for 4 trucks', by: 'System', time: 'Today · 07:30 AM' },
+              { action: 'Toll issue evidence uploaded — DISP-001', by: 'Operations Manager', time: 'Yesterday · 04:45 PM' },
+              { action: 'GST report downloaded — April 2026', by: 'Finance Manager', time: 'Yesterday · 11:20 AM' },
+            ].map((entry, i) => (
+              <div key={i} className="flex items-start gap-3 py-2.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#D1D5DB] mt-2 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-[#111827]">{entry.action}</p>
+                  <p className="text-[11px] text-[#9CA3AF] mt-0.5">{entry.by} · {entry.time}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {toast && <Toast message={toast} onClose={() => setToast(null)} />}
       </div>
     </>
@@ -247,34 +280,6 @@ export default function EnterpriseDashboard() {
     <div className="flex flex-col space-y-24 pb-32">
       <section id="dashboard" className="scroll-mt-8 relative">
         <DashboardSection />
-      </section>
-
-      <section id="one-click-recharge" className="scroll-mt-8 relative">
-        <OneClickRecharge />
-      </section>
-
-      <section id="auto-recharge-rules" className="scroll-mt-8 relative">
-        <AutoRechargeRules />
-      </section>
-
-      <section id="fleet-roster" className="scroll-mt-8 relative">
-        <FleetRoster />
-      </section>
-
-      <section id="trip-toll-budget" className="scroll-mt-8 relative">
-        <TripTollBudget />
-      </section>
-
-      <section id="disputes" className="scroll-mt-8 relative">
-        <Disputes />
-      </section>
-
-      <section id="gst-reports" className="scroll-mt-8 relative">
-        <GstReports />
-      </section>
-
-      <section id="settings" className="scroll-mt-8 relative">
-        <Settings />
       </section>
     </div>
   );

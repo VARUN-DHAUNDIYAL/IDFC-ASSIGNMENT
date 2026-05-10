@@ -19,7 +19,7 @@ export default function MobileFleetRoster() {
       activeFilter === 'Own Trucks' ? v.type === 'own' :
       activeFilter === 'Hired Trucks' ? v.type === 'hired' :
       activeFilter === 'Low Balance' ? (v.status === 'low_balance' || v.status === 'critical') :
-      activeFilter === 'KYC Issue' ? v.kycStatus !== 'verified' : true;
+      activeFilter === 'KYC Issue' ? v.kycStatus === 'kyc_issue' : true;
     return matchSearch && matchFilter;
   });
 
@@ -69,7 +69,12 @@ export default function MobileFleetRoster() {
               <div className="flex items-start justify-between">
                 <div>
                   <h3 className="font-bold text-[#111827]">{truck.rcNumber}</h3>
-                  <p className="text-xs text-[#6B7280] mt-0.5">{truck.driverName}</p>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${truck.type === 'own' ? 'bg-[#EFF6FF] text-[#1E40AF]' : 'bg-[#F3F4F6] text-[#4B5563]'}`}>
+                      {truck.type === 'own' ? 'Own Truck' : 'Hired Truck'}
+                    </span>
+                    <p className="text-xs text-[#6B7280]">{truck.driverName}</p>
+                  </div>
                 </div>
                 <div className="text-right">
                   <p className="font-bold text-[#111827]">₹{truck.balance}</p>
@@ -128,7 +133,12 @@ export default function MobileFleetRoster() {
             <div className="flex items-center justify-between px-5 py-4 bg-white rounded-t-2xl border-b border-[#E5E7EB]">
               <div>
                 <h2 className="text-lg font-bold text-[#111827]">{activeTruck.rcNumber}</h2>
-                <p className="text-xs text-[#6B7280]">{activeTruck.driverName}</p>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${activeTruck.type === 'own' ? 'bg-[#EFF6FF] text-[#1E40AF]' : 'bg-[#F3F4F6] text-[#4B5563]'}`}>
+                    {activeTruck.type === 'own' ? 'Own Truck' : 'Hired Truck'}
+                  </span>
+                  <p className="text-xs text-[#6B7280]">{activeTruck.driverName}</p>
+                </div>
               </div>
               <button onClick={() => setActiveTruck(null)} className="p-1 text-[#6B7280] bg-[#F3F4F6] rounded-full">
                 <X className="w-5 h-5" />

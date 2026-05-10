@@ -68,7 +68,7 @@ function DisputeDrawer({ dispute, onClose, onToast }: {
               <span className="font-medium text-[#111827]">{dispute.issueType}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-[#6B7280]">Disputed Amount</span>
+              <span className="text-[#6B7280]">Issue Amount</span>
               <span className="font-bold text-[#111827]">₹{dispute.amount.toLocaleString('en-IN')}</span>
             </div>
             <div className="flex justify-between text-sm">
@@ -118,7 +118,7 @@ function DisputeDrawer({ dispute, onClose, onToast }: {
 
           {/* Trust note */}
           <div className="bg-[#F9FAFB] rounded-xl p-3 text-xs text-[#6B7280]">
-            All dispute actions are tracked with service request ID <span className="font-mono font-medium text-[#111827]">{dispute.id}</span>
+            All toll issue actions are tracked with service request ID <span className="font-mono font-medium text-[#111827]">{dispute.id}</span>
           </div>
 
           {/* Actions */}
@@ -188,19 +188,19 @@ export default function Disputes() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-xl font-bold text-[#111827] flex items-center gap-2">
-            Disputes
+            Toll Issues
             <InfoTooltip content="Raise and track toll related issues such as failed recharge, double deduction, or wrong vehicle class." />
           </h1>
           <p className="text-sm text-[#6B7280] mt-0.5">Raise and track toll related issues in one place.</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="btn-secondary text-sm" onClick={() => showToast('Disputes exported to CSV')}>
+          <button className="btn-secondary text-sm" onClick={() => showToast('Toll issues exported to CSV')}>
             <Download className="w-4 h-4" />
             Export
           </button>
-          <button className="btn-primary text-sm" onClick={() => showToast('Dispute creation form opened')}>
+          <button className="btn-primary text-sm" onClick={() => showToast('Toll issue creation form opened')}>
             <Plus className="w-4 h-4" />
-            Raise New Dispute
+            Raise Toll Issue
           </button>
         </div>
       </div>
@@ -272,7 +272,7 @@ export default function Disputes() {
         {filtered.length === 0 && (
           <div className="py-12 text-center">
             <CheckCircle className="w-8 h-8 text-[#D1D5DB] mx-auto mb-3" />
-            <p className="text-sm text-[#9CA3AF]">No disputes in this category</p>
+            <p className="text-sm text-[#9CA3AF]">No toll issues in this category</p>
           </div>
         )}
       </div>

@@ -27,18 +27,17 @@ export default function TopNav({ portalMode, onModeChange }: TopNavProps) {
       <div className="flex items-center gap-3 min-w-[200px]">
         {portalMode === 'small-fleet' && (
           <>
-            <img src="/idfc-logo.png" alt="IDFC FIRST" className="w-10 h-10 object-contain rounded-full border border-[#E5E7EB] shadow-sm" />
-            <div className="leading-tight">
-              <div className="text-sm font-bold text-[#111827] tracking-tight">IDFC FIRST</div>
-              <div className="text-[10px] text-[#6B7280] font-medium">Fleet Portal</div>
+            <div className="flex flex-col">
+              <div className="text-lg font-black text-[#991B1B] tracking-tight leading-none">IDFC FIRST</div>
+              <div className="text-xs text-[#111827] font-semibold tracking-wide uppercase mt-0.5">Fleet Portal</div>
             </div>
           </>
         )}
       </div>
 
       {/* Mode Switch — Center */}
-      <div className="flex-1 flex justify-center">
-        <div className="flex bg-[#F3F4F6] rounded-xl p-1 gap-1">
+      <div className="flex-1 flex flex-col items-center justify-center relative">
+        <div className="flex bg-[#F3F4F6] rounded-xl p-1 gap-1 relative z-10">
           <button
             onClick={() => handleModeChange('small-fleet')}
             className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
@@ -105,12 +104,16 @@ export default function TopNav({ portalMode, onModeChange }: TopNavProps) {
         <div className="relative">
           <button
             onClick={() => { setProfileOpen(!profileOpen); setNotifOpen(false); }}
-            className="flex items-center gap-2 pl-2 pr-1 py-1 rounded-lg hover:bg-[#F3F4F6] transition-colors"
+            className="flex items-center gap-3 pl-2 pr-1 py-1 rounded-lg hover:bg-[#F3F4F6] transition-colors border-l border-[#E5E7EB] ml-2"
           >
-            <div className="w-7 h-7 rounded-full bg-[#C1121F] flex items-center justify-center text-xs font-semibold text-white">
+            <div className="w-8 h-8 rounded-full bg-[#C1121F] flex items-center justify-center text-xs font-semibold text-white">
               FA
             </div>
-            <ChevronDown className={`w-3.5 h-3.5 text-[#6B7280] transition-transform ${profileOpen ? 'rotate-180' : ''}`} />
+            <div className="hidden sm:block text-left mr-1">
+              <p className="text-sm font-medium text-[#111827] leading-none">Fleet Admin</p>
+              <p className="text-[10px] text-[#6B7280] mt-1.5 leading-none">Fleet Owner</p>
+            </div>
+            <ChevronDown className={`w-4 h-4 text-[#6B7280] transition-transform ${profileOpen ? 'rotate-180' : ''}`} />
           </button>
           {profileOpen && (
             <div className="absolute right-0 top-10 w-56 bg-white border border-[#E5E7EB] rounded-xl shadow-lg z-50 overflow-hidden">

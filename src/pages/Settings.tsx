@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { CheckCircle, User, Users, Briefcase, Headphones, Bell, Shield, CreditCard, ClipboardList } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { CheckCircle, User, Users, Briefcase, Bell, Shield, CreditCard, ClipboardList } from 'lucide-react';
 import InfoTooltip from '@/components/InfoTooltip';
 import MobileSettings from '@/components/MobileSettings';
 import { auditLog } from '@/data/mockData';
@@ -14,7 +15,7 @@ function Toast({ message, onClose }: { message: string; onClose: () => void }) {
   );
 }
 
-function SectionCard({ title, children }: { title: React.ReactNode; children: React.ReactNode }) {
+function SectionCard({ title, children }: { title: ReactNode; children: ReactNode }) {
   return (
     <div className="bank-card p-6 space-y-4">
       <h2 className="text-base font-semibold text-[#111827]">{title}</h2>
@@ -23,36 +24,6 @@ function SectionCard({ title, children }: { title: React.ReactNode; children: Re
   );
 }
 
-const roles = [
-  {
-    icon: User,
-    title: 'Fleet Owner',
-    desc: 'Can recharge trucks, approve budgets, edit all rules, and approve credit funded recharges.',
-    color: 'text-[#C1121F]',
-    bg: 'bg-[#FEF2F2]',
-  },
-  {
-    icon: Briefcase,
-    title: 'Finance Manager',
-    desc: 'Can view credit funded recharge history, download GST reports, and export data.',
-    color: 'text-[#2563EB]',
-    bg: 'bg-[#EFF6FF]',
-  },
-  {
-    icon: Users,
-    title: 'Operations Manager',
-    desc: 'Can manage trucks, request recharge, handle disputes, but cannot change credit limits.',
-    color: 'text-[#D97706]',
-    bg: 'bg-[#FFFBEB]',
-  },
-  {
-    icon: Headphones,
-    title: 'Viewer',
-    desc: 'Can only view dashboard and reports.',
-    color: 'text-[#16A34A]',
-    bg: 'bg-[#F0FDF4]',
-  },
-];
 
 const approvalRules = [
   { label: 'Require approval for recharge above', value: '₹5,000', enabled: true },
@@ -83,41 +54,14 @@ export default function Settings() {
       <div className="block md:hidden">
         <MobileSettings />
       </div>
-      <div className="hidden md:block space-y-6 animate-fadeIn max-w-4xl pb-28">
+      <div className="hidden md:block space-y-6 animate-fadeIn pb-28">
       {/* Header */}
       <div>
         <h1 className="text-xl font-bold text-[#111827]">Settings</h1>
         <p className="text-sm text-[#6B7280] mt-0.5">Manage roles, approval rules, accounts, and notifications.</p>
       </div>
 
-      {/* User Roles */}
-      <SectionCard title={
-        <span className="flex items-center">
-          User Roles
-          <InfoTooltip content="Control what each team member can view, recharge, approve, or download." />
-        </span>
-      }>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {roles.map(({ icon: Icon, title, desc, color, bg }) => (
-            <div key={title} className="flex items-start gap-3 p-4 border border-[#F3F4F6] rounded-xl">
-              <div className={`w-9 h-9 rounded-xl ${bg} flex items-center justify-center flex-shrink-0`}>
-                <Icon className={`w-4.5 h-4.5 ${color}`} />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-[#111827]">{title}</p>
-                <p className="text-xs text-[#6B7280] mt-0.5 leading-relaxed">{desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-        <button
-          className="btn-secondary text-sm"
-          onClick={() => showToast('Role management opened')}
-        >
-          <Users className="w-4 h-4" />
-          Manage Roles
-        </button>
-      </SectionCard>
+
 
       {/* Approval Rules */}
       <SectionCard title={
@@ -182,7 +126,7 @@ export default function Settings() {
           {[
             { label: 'Low balance alerts', sub: 'Get notified when a truck balance falls below threshold' },
             { label: 'Recharge confirmations', sub: 'Receive SMS and email for every recharge' },
-            { label: 'Dispute updates', sub: 'Get notified when your dispute status changes' },
+            { label: 'Toll issue updates', sub: 'Get notified when your toll issue status changes' },
             { label: 'GST report ready', sub: 'Get notified when monthly reports are generated' },
           ].map((n, i) => (
             <div key={i} className="flex items-start gap-4 py-2 border-b border-[#F9FAFB] last:border-0">
@@ -225,6 +169,67 @@ export default function Settings() {
         <button className="btn-secondary text-sm" onClick={() => showToast('Full audit log exported')}>
           <Shield className="w-4 h-4" />
           Export Full Audit Log
+        </button>
+      </SectionCard>
+
+      {/* Access and Roles */}
+      <SectionCard title={
+        <span className="flex items-center">
+          Access and Roles
+          <InfoTooltip content="Control what each team can approve, edit, view, and download." />
+        </span>
+      }>
+        <p className="text-xs text-[#6B7280] -mt-2">Control what each team can approve, edit, view, and download.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {[
+            {
+              icon: Shield,
+              title: 'Fleet Owner / Super Admin',
+              access: 'Full access',
+              desc: 'Full access to account, approvals, users, reports and settings.',
+              color: 'text-[#C1121F]',
+              bg: 'bg-[#FEF2F2]',
+            },
+            {
+              icon: Briefcase,
+              title: 'Finance Manager',
+              access: 'Approvals & Reports',
+              desc: 'Can approve recharges, manage funding source, download GST reports and view audit log.',
+              color: 'text-[#16A34A]',
+              bg: 'bg-[#F0FDF4]',
+            },
+            {
+              icon: Users,
+              title: 'Operations Manager',
+              access: 'Fleet & Recharge',
+              desc: 'Can manage fleet roster, trip toll budget, toll issues and prepare recharge actions.',
+              color: 'text-[#D97706]',
+              bg: 'bg-[#FFFBEB]',
+            },
+            {
+              icon: User,
+              title: 'Viewer / Auditor',
+              access: 'Read only',
+              desc: 'Read only access to fleet status, reports and audit history.',
+              color: 'text-[#2563EB]',
+              bg: 'bg-[#EFF6FF]',
+            },
+          ].map(({ icon: Icon, title, access, desc, color, bg }) => (
+            <div key={title} className="flex items-start gap-3 p-4 border border-[#F3F4F6] rounded-xl">
+              <div className={`w-9 h-9 rounded-xl ${bg} flex items-center justify-center flex-shrink-0`}>
+                <Icon className={`w-4 h-4 ${color}`} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-[#111827]">{title}</p>
+                <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${bg} ${color} inline-block mt-0.5`}>{access}</span>
+                <p className="text-xs text-[#6B7280] mt-1 leading-relaxed">{desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button className="btn-secondary text-sm" onClick={() => showToast('Staff access invite sent')}>
+          <Users className="w-4 h-4" />
+          Invite Staff Member
         </button>
       </SectionCard>
 

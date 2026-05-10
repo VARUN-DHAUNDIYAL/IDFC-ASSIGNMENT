@@ -54,7 +54,7 @@ function CreateBudgetModal({ onClose, onSave }: {
               <input className="bank-input" placeholder="e.g. Jaipur" value={form.to} onChange={e => setForm({ ...form, to: e.target.value })} />
             </div>
             <div>
-              <label className="block text-xs font-medium text-[#374151] mb-1.5">Estimated Toll Budget (₹)</label>
+              <label className="block text-xs font-medium text-[#374151] mb-1.5">Estimated Toll Needed (₹)</label>
               <input className="bank-input" placeholder="e.g. 3000" value={form.budget} onChange={e => setForm({ ...form, budget: e.target.value })} />
             </div>
             <div></div>

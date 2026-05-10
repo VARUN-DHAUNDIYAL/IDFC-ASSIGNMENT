@@ -86,13 +86,13 @@ export default function GstReports() {
               <p className="text-3xl font-bold text-[#111827]">{gstStats.receiptsReconciled}</p>
             </div>
             <div className="bank-card p-5">
-              <p className="text-xs text-[#6B7280] font-medium uppercase tracking-wide mb-2">Disputes Resolved</p>
+              <p className="text-xs text-[#6B7280] font-medium uppercase tracking-wide mb-2">Toll Issues Resolved</p>
               <p className="text-3xl font-bold text-[#16A34A]">{gstStats.disputesResolved}</p>
             </div>
             <div className="bank-card p-5">
               <p className="text-xs text-[#6B7280] font-medium uppercase tracking-wide mb-2 flex items-center gap-1">
                 Duplicate Tolls Flagged
-                <InfoTooltip content="Possible duplicate toll deductions identified for review or dispute." />
+                <InfoTooltip content="Possible duplicate toll deductions identified for review or toll issue." />
               </p>
               <p className="text-3xl font-bold text-[#2563EB]">₹{gstStats.duplicateTollsPrevented.toLocaleString('en-IN')}</p>
             </div>
@@ -116,7 +116,7 @@ export default function GstReports() {
                 <th>Month</th>
                 <th>Total Toll Spend</th>
                 <th>Receipts</th>
-                <th>Disputes</th>
+                <th>Toll Issues</th>
                 <th>Status</th>
                 <th>Download</th>
               </tr>
@@ -127,7 +127,7 @@ export default function GstReports() {
                   <td className="font-semibold text-[#111827]">{r.month} {r.year}</td>
                   <td className="font-bold text-[#111827]">₹{r.totalTollSpend.toLocaleString('en-IN')}</td>
                   <td className="text-[#6B7280]">{r.receipts} receipts</td>
-                  <td className="text-[#6B7280]">{r.disputes} resolved</td>
+                  <td className="text-[#6B7280]">{r.disputes} toll issues resolved</td>
                   <td>
                     <span className="badge badge-success">Ready</span>
                   </td>
